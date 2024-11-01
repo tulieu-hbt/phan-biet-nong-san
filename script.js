@@ -1,3 +1,7 @@
+// Thêm thư viện Teachable Machine Image
+// Bạn cần thêm dòng này trong phần <head> của HTML
+// <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
 const video = document.getElementById('camera');
 const canvas = document.getElementById('canvas');
 const result = document.getElementById('result');
@@ -11,10 +15,11 @@ const vietnameseNames = {
     "broccoli": "Bông cải",
     "grape": "Nho",
     "pineapple": "Dứa",
-    "dragon fruit":" Thanh long", 
+    "dragon fruit": "Thanh long",
     // Thêm nhiều từ vựng hơn nếu cần
 };
 
+// Khởi động camera
 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
     .then((stream) => {
         video.srcObject = stream;
@@ -26,22 +31,25 @@ navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
 
 let model;
 
-// Hàm tải mô hình MobileNet
+// Hàm tải mô hình từ Teachable Machine
 async function loadModel() {
     try {
-        console.log("Đang tải mô hình MobileNet...");
-        model = await mobilenet.load(); // Tải mô hình MobileNet
-        console.log("Mô hình MobileNet đã được tải thành công");
+        console.log("Đang tải mô hình từ Teachable Machine...");
+        const modelURL = "model/model.json"; // Đường dẫn tới model.json
+        const metadataURL = "model/metadata.json"; // Đường dẫn tới metadata.json nếu có
+        model = await tmImage.load(modelURL, metadataURL);
+        console.log("Mô hình đã được tải thành công");
         result.innerText = "Mô hình đã sẵn sàng. Hãy chụp hình!";
     } catch (error) {
-        console.error("Lỗi khi tải mô hình MobileNet:", error);
-        result.innerText = "Không thể tải mô hình. Kiểm tra kết nối mạng!";
+        console.error("Lỗi khi tải mô hình:", error);
+        result.innerText = "Không thể tải mô hình!";
     }
 }
 
 // Gọi hàm tải mô hình khi trang mở
 loadModel();
 
+// Hàm chụp ảnh từ camera
 function captureImage() {
     const context = canvas.getContext('2d');
     canvas.width = video.videoWidth;
@@ -50,13 +58,14 @@ function captureImage() {
     classifyImage(canvas);
 }
 
+// Hàm phân loại hình ảnh
 async function classifyImage(canvas) {
     result.innerText = "Đang nhận diện...";
 
     if (model) {
         try {
             console.log("Đang phân loại hình ảnh...");
-            const predictions = await model.classify(canvas); // Dùng mô hình để phân loại
+            const predictions = await model.predict(canvas);
             const topPrediction = predictions[0];
 
             // Lấy tên đối tượng tiếng Anh từ kết quả phân loại
@@ -64,11 +73,9 @@ async function classifyImage(canvas) {
 
             // Kiểm tra tên tiếng Anh có trong từ điển không
             if (vietnameseNames.hasOwnProperty(predictedName)) {
-                // Nếu có trong từ điển, hiển thị tên tiếng Việt và tỷ lệ
                 const vietnameseName = vietnameseNames[predictedName];
                 result.innerText = `Kết quả: ${vietnameseName} - Tỉ lệ: ${(topPrediction.probability * 100).toFixed(2)}%`;
             } else {
-                // Nếu không có trong từ điển, hiển thị thông báo "Đây không phải là nông sản"
                 result.innerText = "Đây không phải là nông sản";
             }
 
@@ -82,3 +89,7 @@ async function classifyImage(canvas) {
         result.innerText = "Mô hình chưa sẵn sàng!";
     }
 }
+
+// Thêm sự kiện khi nhấn nút chụp ảnh
+const captureButton = document.getElementById('capture-button');
+captureButton.addEventListener('click', captureImage);
