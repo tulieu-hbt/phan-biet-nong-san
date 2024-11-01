@@ -58,14 +58,16 @@ async function classifyImage(canvas) {
             const predictions = await model.classify(canvas); // Dùng mô hình để phân loại
             const topPrediction = predictions[0];
 
-            // Lấy tên tiếng Việt từ từ điển nếu có, nếu không để là null
-            const vietnameseName = vietnameseNames[topPrediction.className];
+            // Lấy tên đối tượng tiếng Anh từ kết quả phân loại
+            const predictedName = topPrediction.className.toLowerCase();
 
-            if (vietnameseName) {
-                // Nếu tên đối tượng có trong từ điển, hiển thị tên tiếng Việt và tỷ lệ xác suất
+            // Kiểm tra tên tiếng Anh có trong từ điển không
+            if (vietnameseNames.hasOwnProperty(predictedName)) {
+                // Nếu có trong từ điển, hiển thị tên tiếng Việt và tỷ lệ
+                const vietnameseName = vietnameseNames[predictedName];
                 result.innerText = `Kết quả: ${vietnameseName} - Tỉ lệ: ${(topPrediction.probability * 100).toFixed(2)}%`;
             } else {
-                // Nếu không có trong từ điển, thông báo "Đây không phải là nông sản"
+                // Nếu không có trong từ điển, hiển thị thông báo "Đây không phải là nông sản"
                 result.innerText = "Đây không phải là nông sản";
             }
 
