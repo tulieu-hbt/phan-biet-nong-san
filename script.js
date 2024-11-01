@@ -13,21 +13,27 @@ navigator.mediaDevices.getUserMedia({ video: true })
 
 let model;
 
-// Tải mô hình MobileNet từ TensorFlow.js
-async function loadModel() {
-    try {
-        console.log("Đang tải mô hình MobileNet...");
-        model = await mobilenet.load();
-        console.log("Model MobileNet đã được tải thành công");
-        result.innerText = "Mô hình đã sẵn sàng. Hãy chụp hình!";
-    } catch (error) {
-        console.error("Lỗi khi tải mô hình MobileNet:", error);
-        result.innerText = "Không thể tải mô hình. Kiểm tra kết nối mạng!";
+// Kiểm tra xem thư viện đã được tải hay chưa
+if (typeof mobilenet === 'undefined' || typeof tf === 'undefined') {
+    console.error("Không thể tải các thư viện TensorFlow.js hoặc MobileNet.");
+    result.innerText = "Không thể tải thư viện TensorFlow.js hoặc MobileNet!";
+} else {
+    // Tải mô hình MobileNet từ TensorFlow.js
+    async function loadModel() {
+        try {
+            console.log("Đang tải mô hình MobileNet...");
+            model = await mobilenet.load();
+            console.log("Model MobileNet đã được tải thành công");
+            result.innerText = "Mô hình đã sẵn sàng. Hãy chụp hình!";
+        } catch (error) {
+            console.error("Lỗi khi tải mô hình MobileNet:", error);
+            result.innerText = "Không thể tải mô hình. Kiểm tra kết nối mạng!";
+        }
     }
-}
 
-// Gọi hàm tải mô hình khi trang mở
-loadModel();
+    // Gọi hàm tải mô hình khi trang mở
+    loadModel();
+}
 
 function captureImage() {
     const context = canvas.getContext('2d');
