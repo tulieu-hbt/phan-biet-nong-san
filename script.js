@@ -1,7 +1,8 @@
 const video = document.getElementById('camera');
 const canvas = document.getElementById('canvas');
 const result = document.getElementById('result');
-// Từ điển chuyển đổi từ tiếng Anh sang tiếng Việt
+
+// Từ điển chuyển đổi từ tiếng Anh sang tiếng Việt cho các nông sản
 const vietnameseNames = {
     "banana": "Chuối",
     "orange": "Cam",
@@ -13,7 +14,7 @@ const vietnameseNames = {
     // Thêm nhiều từ vựng hơn nếu cần
 };
 
-navigator.mediaDevices.getUserMedia({ video: true })
+navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
     .then((stream) => {
         video.srcObject = stream;
     })
@@ -57,10 +58,17 @@ async function classifyImage(canvas) {
             const predictions = await model.classify(canvas); // Dùng mô hình để phân loại
             const topPrediction = predictions[0];
             
-            // Kiểm tra từ điển để chuyển đổi sang tiếng Việt
-            const vietnameseName = vietnameseNames[topPrediction.className] || topPrediction.className;
+            // Kiểm tra từ điển để chuyển đổi sang tiếng Việt nếu là nông sản
+            const vietnameseName = vietnameseNames[topPrediction.className];
 
-            result.innerText = `Kết quả: ${vietnameseName} - Tỉ lệ: ${(topPrediction.probability * 100).toFixed(2)}%`;
+            if (vietnameseName) {
+                // Nếu tên đối tượng có trong từ điển, hiển thị tên tiếng Việt
+                result.innerText = `Kết quả: ${vietnameseName} - Tỉ lệ: ${(topPrediction.probability * 100).toFixed(2)}%`;
+            } else {
+                // Nếu không có trong từ điển, hiển thị thông báo "Đây không phải là nông sản"
+                result.innerText = "Đây không phải là nông sản";
+            }
+
             console.log("Kết quả phân loại:", topPrediction);
         } catch (error) {
             console.error("Lỗi khi phân loại hình ảnh:", error);
@@ -71,4 +79,3 @@ async function classifyImage(canvas) {
         result.innerText = "Mô hình chưa sẵn sàng!";
     }
 }
-
