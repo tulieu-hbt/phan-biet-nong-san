@@ -13,12 +13,18 @@ navigator.mediaDevices.getUserMedia({ video: true })
 
 let model;
 
-// Hàm tải mô hình MobileNet
+// Kiểm tra sự tồn tại của thư viện trước khi tải mô hình
 async function loadModel() {
+    if (typeof mobilenet === 'undefined') {
+        console.error("Thư viện MobileNet không được tải.");
+        result.innerText = "Không thể tải thư viện MobileNet. Vui lòng kiểm tra kết nối mạng!";
+        return;
+    }
+
     try {
         console.log("Đang tải mô hình MobileNet...");
         model = await mobilenet.load();
-        console.log("Mô hình MobileNet đã được tải thành công");
+        console.log("Model MobileNet đã được tải thành công");
         result.innerText = "Mô hình đã sẵn sàng. Hãy chụp hình!";
     } catch (error) {
         console.error("Lỗi khi tải mô hình MobileNet:", error);
