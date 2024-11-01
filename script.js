@@ -11,6 +11,7 @@ const vietnameseNames = {
     "broccoli": "Bông cải",
     "grape": "Nho",
     "pineapple": "Dứa",
+    "dragon fruit":" Thanh long", 
     // Thêm nhiều từ vựng hơn nếu cần
 };
 
