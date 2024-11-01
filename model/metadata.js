@@ -1,0 +1,1 @@
+{"tfjsVersion":"1.3.1","tmVersion":"2.4.7","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2024-11-01T13:14:14.524Z","userMetadata":{},"modelName":"tm-my-image-model","labels":["ThanhLong","CaChua"],"imageSize":224}
