@@ -57,15 +57,15 @@ async function classifyImage(canvas) {
             console.log("Đang phân loại hình ảnh...");
             const predictions = await model.classify(canvas); // Dùng mô hình để phân loại
             const topPrediction = predictions[0];
-            
-            // Kiểm tra từ điển để chuyển đổi sang tiếng Việt nếu là nông sản
+
+            // Lấy tên tiếng Việt từ từ điển nếu có, nếu không để là null
             const vietnameseName = vietnameseNames[topPrediction.className];
 
             if (vietnameseName) {
-                // Nếu tên đối tượng có trong từ điển, hiển thị tên tiếng Việt
+                // Nếu tên đối tượng có trong từ điển, hiển thị tên tiếng Việt và tỷ lệ xác suất
                 result.innerText = `Kết quả: ${vietnameseName} - Tỉ lệ: ${(topPrediction.probability * 100).toFixed(2)}%`;
             } else {
-                // Nếu không có trong từ điển, hiển thị thông báo "Đây không phải là nông sản"
+                // Nếu không có trong từ điển, thông báo "Đây không phải là nông sản"
                 result.innerText = "Đây không phải là nông sản";
             }
 
