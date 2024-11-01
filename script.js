@@ -1,6 +1,17 @@
 const video = document.getElementById('camera');
 const canvas = document.getElementById('canvas');
 const result = document.getElementById('result');
+// Từ điển chuyển đổi từ tiếng Anh sang tiếng Việt
+const vietnameseNames = {
+    "banana": "Chuối",
+    "orange": "Cam",
+    "apple": "Táo",
+    "carrot": "Cà rốt",
+    "broccoli": "Bông cải",
+    "grape": "Nho",
+    "pineapple": "Dứa",
+    // Thêm nhiều từ vựng hơn nếu cần
+};
 
 navigator.mediaDevices.getUserMedia({ video: true })
     .then((stream) => {
@@ -45,7 +56,11 @@ async function classifyImage(canvas) {
             console.log("Đang phân loại hình ảnh...");
             const predictions = await model.classify(canvas); // Dùng mô hình để phân loại
             const topPrediction = predictions[0];
-            result.innerText = `Kết quả: ${topPrediction.className} - Tỉ lệ: ${(topPrediction.probability * 100).toFixed(2)}%`;
+            
+            // Kiểm tra từ điển để chuyển đổi sang tiếng Việt
+            const vietnameseName = vietnameseNames[topPrediction.className] || topPrediction.className;
+
+            result.innerText = `Kết quả: ${vietnameseName} - Tỉ lệ: ${(topPrediction.probability * 100).toFixed(2)}%`;
             console.log("Kết quả phân loại:", topPrediction);
         } catch (error) {
             console.error("Lỗi khi phân loại hình ảnh:", error);
@@ -56,3 +71,4 @@ async function classifyImage(canvas) {
         result.innerText = "Mô hình chưa sẵn sàng!";
     }
 }
+
