@@ -1,7 +1,3 @@
-// Thêm thư viện Teachable Machine Image
-// Bạn cần thêm dòng này trong phần <head> của HTML
-// <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-
 const video = document.getElementById('camera');
 const canvas = document.getElementById('canvas');
 const result = document.getElementById('result');
@@ -35,9 +31,9 @@ let model;
 async function loadModel() {
     try {
         console.log("Đang tải mô hình từ Teachable Machine...");
-        const modelURL = "../model/model.json"; // Đường dẫn tới model.json
-        const metadataURL = "../model/metadata.json"; // Đường dẫn tới metadata.json nếu có
-        model = await tmImage.load(modelURL, metadataURL);
+        const modelURL = "model/model.json"; // Đường dẫn tới model.json
+        // const metadataURL = "model/metadata.json"; // Nếu có metadata.json, hãy bật dòng này
+        model = await tmImage.load(modelURL /*, metadataURL */);
         console.log("Mô hình đã được tải thành công");
         result.innerText = "Mô hình đã sẵn sàng. Hãy chụp hình!";
     } catch (error) {
@@ -47,7 +43,9 @@ async function loadModel() {
 }
 
 // Gọi hàm tải mô hình khi trang mở
-loadModel();
+window.addEventListener('DOMContentLoaded', (event) => {
+    loadModel();
+});
 
 // Hàm chụp ảnh từ camera
 function captureImage() {
@@ -92,4 +90,10 @@ async function classifyImage(canvas) {
 
 // Thêm sự kiện khi nhấn nút chụp ảnh
 const captureButton = document.getElementById('capture-button');
-captureButton.addEventListener('click', captureImage);
+captureButton.addEventListener('click', () => {
+    if (model) {
+        captureImage();
+    } else {
+        result.innerText = "Mô hình chưa sẵn sàng!";
+    }
+});
