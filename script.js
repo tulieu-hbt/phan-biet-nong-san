@@ -8,6 +8,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
     })
     .catch((error) => {
         console.error("Lỗi khi truy cập camera:", error);
+        result.innerText = "Lỗi khi truy cập camera!";
     });
 
 let model;
