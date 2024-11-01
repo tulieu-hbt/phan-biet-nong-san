@@ -35,8 +35,8 @@ let model;
 async function loadModel() {
     try {
         console.log("Đang tải mô hình từ Teachable Machine...");
-        const modelURL = "model/model.json"; // Đường dẫn tới model.json
-        const metadataURL = "model/metadata.json"; // Đường dẫn tới metadata.json nếu có
+        const modelURL = "../model/model.json"; // Đường dẫn tới model.json
+        const metadataURL = "../model/metadata.json"; // Đường dẫn tới metadata.json nếu có
         model = await tmImage.load(modelURL, metadataURL);
         console.log("Mô hình đã được tải thành công");
         result.innerText = "Mô hình đã sẵn sàng. Hãy chụp hình!";
