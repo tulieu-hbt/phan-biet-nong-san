@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phân Biệt Nông Sản</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Tải thư viện TensorFlow.js và MobileNet mới nhất -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@latest"></script>
+    <title>Nhận Diện Nông Sản</title>
+    <!-- Thêm thư viện Teachable Machine Image -->
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+  
+
 </head>
 <body>
-    <h1>Phân Biệt Nông Sản</h1>
-    <div id="camera-container">
-        <video id="camera" autoplay playsinline></video>
-        <button onclick="captureImage()">Chụp Hình</button>
-    </div>
+    <h1>Nhận Diện Nông Sản</h1>
+    <video id="camera" autoplay playsinline width="400" height="300"></video>
+    <br>
+    <button id="capture-button">Chụp Ảnh</button>
     <canvas id="canvas" style="display: none;"></canvas>
-    
-    <!-- Phần tử hiển thị kết quả phân tích -->
-    <p id="result">Kết quả sẽ hiển thị tại đây</p>
-    
+    <h2 id="result">Mô hình đang tải...</h2>
+
+    <!-- Thêm mã JavaScript của bạn ở đây hoặc liên kết đến tệp .js riêng -->
     <script src="script.js"></script>
 </body>
 </html>
