@@ -13,7 +13,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
 
 let model;
 
-// Kiểm tra sự tồn tại của thư viện trước khi tải mô hình
+// Tải mô hình MobileNet từ TensorFlow.js
 async function loadModel() {
     if (typeof mobilenet === 'undefined') {
         console.error("Thư viện MobileNet không được tải.");
